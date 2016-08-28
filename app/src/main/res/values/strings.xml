@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">OrcaSwitchLibrary</string>
+    <string name="bm_enable">Enable</string>
+    <string name="bm_disable">Disable</string>
+    <string name="bm_check">Check to toggle Event.</string>
+    <string name="bm_uncheck">Uncheck to toggle Event.</string>
+    <string name="bm_check_without_event">Check to not toggle Event.</string>
+    <string name="bm_uncheck_without_event">Uncheck to not toggle Event.</string>
+
+    <string name="bm_enabled">Enabled</string>
+    <string name="bm_disabled">Disabled</string>
+    <string name="bm_checked">Checked to toggle Event.</string>
+    <string name="bm_unchecked">Unchecked to toggle Event.</string>
+    <string name="bm_checked_without_event">Check to not toggle Event.</string>
+    <string name="bm_unchecked_without_event">Uncheck to not toggle Event.</string>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="thumb">#019285</color>
+    <color name="thumb_off">#FAFAFA</color>
+    <color name="thumb_disabled">#BDBDBD</color>
+    <color name="track_on">#80019285</color>
+    <color name="track_off">#40000000</color>
+    <color name="track_disabled">#20000000</color>
+    <color name="ripple">#00000000</color>
+    <color name="ripple_on">#31019285</color>
+    <color name="ripple_off">#31FAFAFA</color>
+    <color name="ripple_disabled">#31BDBDBD</color>
+</resources>

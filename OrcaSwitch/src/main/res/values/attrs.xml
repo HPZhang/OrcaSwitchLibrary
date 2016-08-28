@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="OrcaSwitch">
+
+        <attr name="disabled" format="boolean"/>
+
+        <attr name="checked" format="boolean"/>
+
+        <attr name="size" format="enum">
+            <enum name="small" value="40"/>
+            <enum name="medium" value="48"/>
+            <enum name="large" value="56"/>
+        </attr>
+
+        <attr name="thumbOnColor" format="color|reference"/>
+        <attr name="thumbOffColor" format="color|reference"/>
+        <attr name="thumbDisabledColor" format="color|reference"/>
+        <attr name="trackOnColor" format="color|reference"/>
+        <attr name="trackOffColor" format="color|reference"/>
+        <attr name="trackDisabledColor" format="color|reference"/>
+        <attr name="rippleOnColor" format="color|reference"/>
+        <attr name="rippleOffColor" format="color|reference"/>
+        <attr name="rippleDisabledColor" format="color|reference"/>
+        
+    </declare-styleable>
+
+</resources>
