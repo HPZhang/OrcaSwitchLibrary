@@ -1,1 +1,2 @@
-include ':app', ':OrcaSwitch'
+include ':library'
+include ':demo'

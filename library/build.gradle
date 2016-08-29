@@ -1,0 +1,109 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+group   = 'com.orcanote.orcaswitch'
+version = '0.1.0'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 23
+        versionCode 1
+        versionName "0.1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+def siteUrl = 'https://github.com/HPZhang/OrcaSwitchLibrary'
+def gitUrl  = 'https://github.com/HPZhang/OrcaSwitchLibrary.git'
+
+Properties props = new Properties()
+props.load(project.rootProject.file('local.properties').newDataInputStream())
+
+bintray {
+    user = props.getProperty("bintray.user")
+    key  = props.getProperty("bintray.apikey")
+
+    configurations = ['archives']
+
+    pkg {
+        repo                  = 'maven'
+        name                  = 'orcaswitch'
+        desc                  = 'A custom view for switch.'
+        websiteUrl            = siteUrl
+        issueTrackerUrl       = "$siteUrl/issues"
+        vcsUrl                = gitUrl
+        licenses              = ['Apache-2.0']
+        labels                = ['android', 'switch', 'view']
+        publicDownloadNumbers = true
+    }
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            packaging  'aar'
+            name       'OrcaSwitch'
+            url        siteUrl
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url  'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                }
+            }
+            developers {
+                developer {
+                    id    'hpzhang'
+                    name  'hpzhang'
+                    email 'use_to_work@163.com'
+                }
+            }
+            scm {
+                url                 siteUrl
+                connection          gitUrl
+                developerConnection gitUrl
+
+            }
+        }
+    }
+}
+
+dependencies {
+    final SUPPORT_LIBRARY_VERSION   = '23.2.1'
+
+    compile "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
+
+    testCompile 'junit:junit:4.12'
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+task findConventions << {
+    println project.getConvention()
+}
