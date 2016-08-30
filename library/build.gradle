@@ -2,19 +2,33 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
+final MIN_SDK_VERSION           = 19
+final COMPILE_SDK_VERSION       = 23
+final BUILD_TOOLS_VERSION       = '23.0.3'
+final VERSION_CODE              = 1
+final VERSION_NAME              = '0.1.0'
+final SITE_URL                  = 'https://github.com/HPZhang/OrcaSwitchLibrary'
+final GIT_UTL                   = 'https://github.com/HPZhang/OrcaSwitchLibrary.git'
+final DEVELOPER_NAME            = 'hpzhang'
+final DEVELOPER_EMAIL           = 'use_to_work@163.com'
+
 group   = 'com.orcanote.orcaswitch'
-version = '0.1.0'
+version = VERSION_NAME
+
+Properties props = new Properties()
+props.load(project.rootProject.file('local.properties').newDataInputStream())
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion COMPILE_SDK_VERSION
+    buildToolsVersion BUILD_TOOLS_VERSION
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 23
-        versionCode 1
-        versionName "0.1.0"
+        minSdkVersion    MIN_SDK_VERSION
+        targetSdkVersion COMPILE_SDK_VERSION
+        versionCode      VERSION_CODE
+        versionName      VERSION_NAME
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -23,25 +37,25 @@ android {
     }
 }
 
-def siteUrl = 'https://github.com/HPZhang/OrcaSwitchLibrary'
-def gitUrl  = 'https://github.com/HPZhang/OrcaSwitchLibrary.git'
+dependencies {
+    final SUPPORT_LIBRARY_VERSION   = '23.2.1'
 
-Properties props = new Properties()
-props.load(project.rootProject.file('local.properties').newDataInputStream())
+    compile "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
+
+    testCompile 'junit:junit:4.12'
+}
 
 bintray {
-    user = props.getProperty("bintray.user")
-    key  = props.getProperty("bintray.apikey")
-
+    user           = props.getProperty("bintray.user")
+    key            = props.getProperty("bintray.apikey")
     configurations = ['archives']
-
     pkg {
         repo                  = 'maven'
         name                  = 'orcaswitch'
         desc                  = 'A custom view for switch.'
-        websiteUrl            = siteUrl
-        issueTrackerUrl       = "$siteUrl/issues"
-        vcsUrl                = gitUrl
+        websiteUrl            = SITE_URL
+        issueTrackerUrl       = "$SITE_URL/issues"
+        vcsUrl                = GIT_UTL
         licenses              = ['Apache-2.0']
         labels                = ['android', 'switch', 'view']
         publicDownloadNumbers = true
@@ -53,7 +67,7 @@ install {
         pom.project {
             packaging  'aar'
             name       'OrcaSwitch'
-            url        siteUrl
+            url        SITE_URL
             licenses {
                 license {
                     name 'The Apache Software License, Version 2.0'
@@ -62,27 +76,19 @@ install {
             }
             developers {
                 developer {
-                    id    'hpzhang'
-                    name  'hpzhang'
-                    email 'use_to_work@163.com'
+                    id    DEVELOPER_NAME
+                    name  DEVELOPER_NAME
+                    email DEVELOPER_EMAIL
                 }
             }
             scm {
-                url                 siteUrl
-                connection          gitUrl
-                developerConnection gitUrl
+                url                 SITE_URL
+                connection          GIT_UTL
+                developerConnection GIT_UTL
 
             }
         }
     }
-}
-
-dependencies {
-    final SUPPORT_LIBRARY_VERSION   = '23.2.1'
-
-    compile "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
-
-    testCompile 'junit:junit:4.12'
 }
 
 task sourcesJar(type: Jar) {
@@ -99,6 +105,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
 }
+
 artifacts {
     archives javadocJar
     archives sourcesJar
