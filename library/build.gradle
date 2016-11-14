@@ -2,13 +2,13 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-final MIN_SDK_VERSION           = 19
+final MIN_SDK_VERSION           = 15
 final COMPILE_SDK_VERSION       = 23
 final BUILD_TOOLS_VERSION       = '23.0.3'
-final VERSION_CODE              = 1
-final VERSION_NAME              = '0.1.0'
+final VERSION_CODE              = 2
+final VERSION_NAME              = '0.1.1'
 final SITE_URL                  = 'https://github.com/HPZhang/OrcaSwitchLibrary'
-final GIT_UTL                   = 'https://github.com/HPZhang/OrcaSwitchLibrary.git'
+final GIT_URL                   = 'https://github.com/HPZhang/OrcaSwitchLibrary.git'
 final DEVELOPER_NAME            = 'hpzhang'
 final DEVELOPER_EMAIL           = 'use_to_work@163.com'
 
@@ -55,7 +55,7 @@ bintray {
         desc                  = 'A custom view for switch.'
         websiteUrl            = SITE_URL
         issueTrackerUrl       = "$SITE_URL/issues"
-        vcsUrl                = GIT_UTL
+        vcsUrl                = GIT_URL
         licenses              = ['Apache-2.0']
         labels                = ['android', 'switch', 'view']
         publicDownloadNumbers = true
@@ -83,8 +83,8 @@ install {
             }
             scm {
                 url                 SITE_URL
-                connection          GIT_UTL
-                developerConnection GIT_UTL
+                connection          GIT_URL
+                developerConnection GIT_URL
 
             }
         }
