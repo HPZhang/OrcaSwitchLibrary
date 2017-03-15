@@ -19,9 +19,6 @@
         <attr name="trackOnColor" format="color|reference"/>
         <attr name="trackOffColor" format="color|reference"/>
         <attr name="trackDisabledColor" format="color|reference"/>
-        <attr name="rippleOnColor" format="color|reference"/>
-        <attr name="rippleOffColor" format="color|reference"/>
-        <attr name="rippleDisabledColor" format="color|reference"/>
         
     </declare-styleable>
 

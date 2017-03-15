@@ -5,8 +5,8 @@ apply plugin: 'com.jfrog.bintray'
 final MIN_SDK_VERSION           = 15
 final COMPILE_SDK_VERSION       = 23
 final BUILD_TOOLS_VERSION       = '23.0.3'
-final VERSION_CODE              = 2
-final VERSION_NAME              = '0.1.1'
+final VERSION_CODE              = 3
+final VERSION_NAME              = '0.1.2'
 final SITE_URL                  = 'https://github.com/HPZhang/OrcaSwitchLibrary'
 final GIT_URL                   = 'https://github.com/HPZhang/OrcaSwitchLibrary.git'
 final DEVELOPER_NAME            = 'hpzhang'

@@ -23,7 +23,6 @@ public class OrcaSwitch extends View {
     private float mThumbRadius;
     private float mTrackWidth;
     private float mTrackHeight;
-    private float mRippleRadius;
     private float mWidth;
     private float mHeight;
 
@@ -31,9 +30,8 @@ public class OrcaSwitch extends View {
     private float mCenterX;
     private float mThumbX;
     private float mThumbCircleY;
-    private float mTrackLeft;
-    private float mTrackRight;
-    private float mRippleCircleY;
+    private float mThumbLeft;
+    private float mThumbRight;
     private float mActionMoveX;
     private float mActionMoveY;
 
@@ -44,10 +42,6 @@ public class OrcaSwitch extends View {
     private Paint mTrackOnPaint;
     private Paint mTrackOffPaint;
     private Paint mTrackDisabledPaint;
-    private Paint mRipplePaint;
-    private Paint mRippleOnPaint;
-    private Paint mRippleOffPaint;
-    private Paint mRippleDisabledPaint;
 
     // rect
     private RectF mTrackRect;
@@ -101,33 +95,29 @@ public class OrcaSwitch extends View {
         int size = ta.getInteger(R.styleable.OrcaSwitch_size, 48);
         if (size == 40) {
             mThumbRadius = 9 * density;
-            mTrackWidth = 22 * density;
-            mTrackHeight = 11 * density;
-            mRippleRadius = 20 * density;
+            mTrackWidth = 40 * density;
+            mTrackHeight = 22 * density;
         } else if (size == 56) {
-            mThumbRadius = 11 * density;
-            mTrackWidth = 30 * density;
-            mTrackHeight = 15 * density;
-            mRippleRadius = 28 * density;
+            mThumbRadius = 13 * density;
+            mTrackWidth = 56 * density;
+            mTrackHeight = 30 * density;
         } else {
-            mThumbRadius = 10 * density;
-            mTrackWidth = 26 * density;
-            mTrackHeight = 13 * density;
-            mRippleRadius = 24 * density;
+            mThumbRadius = 11 * density;
+            mTrackWidth = 48 * density;
+            mTrackHeight = 26 * density;
         }
-        mWidth = mTrackWidth + mRippleRadius * 2;
-        mHeight = size * density;
+        mWidth = mTrackWidth;
+        mHeight = mTrackHeight;
 
         // offset
         mCenterX = mWidth / 2;
-        mTrackLeft = mCenterX - mTrackWidth / 2;
-        mTrackRight = mTrackLeft + mTrackWidth;
+        mThumbLeft = (mWidth - mThumbRadius * 4) / 2 + mThumbRadius;
+        mThumbRight = mWidth - (mWidth - mThumbRadius * 4) / 2 - mThumbRadius;
         mThumbCircleY = mHeight / 2;
-        mRippleCircleY = mRippleRadius;
         if (mChecked) {
-            mThumbX = mTrackRight;
+            mThumbX = mThumbRight;
         } else {
-            mThumbX = mTrackLeft;
+            mThumbX = mThumbLeft;
         }
 
         // paint
@@ -137,10 +127,6 @@ public class OrcaSwitch extends View {
         mTrackOnPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTrackOffPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTrackDisabledPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mRipplePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mRippleOnPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mRippleOffPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mRippleDisabledPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
         int thumbOnColor = ta
             .getColor(R.styleable.OrcaSwitch_thumbOnColor, Color.parseColor("#009688"));
@@ -149,35 +135,25 @@ public class OrcaSwitch extends View {
         int thumbDisabledColor = ta
             .getColor(R.styleable.OrcaSwitch_thumbDisabledColor, Color.parseColor("#bdbdbd"));
         int trackOnColor = ta
-            .getColor(R.styleable.OrcaSwitch_trackOnColor, Color.parseColor("#80009688"));
+            .getColor(R.styleable.OrcaSwitch_trackOnColor, Color.parseColor("#4CAF50"));
         int trackOffColor = ta
             .getColor(R.styleable.OrcaSwitch_trackOffColor, Color.parseColor("#42000000"));
         int trackDisabledColor = ta
             .getColor(R.styleable.OrcaSwitch_trackDisabledColor, Color.parseColor("#1e000000"));
-        int rippleColor = Color.parseColor("#00000000");
-        int rippleOnColor = ta
-            .getColor(R.styleable.OrcaSwitch_rippleOnColor, Color.parseColor("#33009688"));
-        int rippleOffColor = ta
-            .getColor(R.styleable.OrcaSwitch_rippleOffColor, Color.parseColor("#4beaeaea"));
-        int rippleDisabledColor = ta
-            .getColor(R.styleable.OrcaSwitch_rippleDisabledColor, Color.parseColor("#4bbdbdbd"));
+
         mThumbOnPaint.setColor(thumbOnColor);
         mThumbOffPaint.setColor(thumbOffColor);
         mThumbDisabledPaint.setColor(thumbDisabledColor);
         mTrackOnPaint.setColor(trackOnColor);
         mTrackOffPaint.setColor(trackOffColor);
         mTrackDisabledPaint.setColor(trackDisabledColor);
-        mRipplePaint.setColor(rippleColor);
-        mRippleOnPaint.setColor(rippleOnColor);
-        mRippleOffPaint.setColor(rippleOffColor);
-        mRippleDisabledPaint.setColor(rippleDisabledColor);
 
         // rect
         mTrackRect  = new RectF(
-            mTrackLeft,
-            mHeight / 2 - mTrackHeight / 2,
-            mTrackRight,
-            mHeight / 2 - mTrackHeight / 2 + mTrackHeight
+            0,
+            0,
+            mWidth,
+            mHeight
         );
 
         ta.recycle();
@@ -193,7 +169,6 @@ public class OrcaSwitch extends View {
         super.onDraw(canvas);
 
         drawTrack(canvas);
-        drawRipple(canvas);
         drawThumb(canvas);
     }
 
@@ -243,10 +218,10 @@ public class OrcaSwitch extends View {
                 if (isTapped(event)) {
                     performClick();
                 } else {
-                    if (mThumbX >= mTrackLeft && mThumbX < mCenterX) {
-                        animate(-mTrackWidth);
+                    if (mThumbX >= 0 && mThumbX < mCenterX) {
+                        animate(-mThumbRadius * 2);
                     } else {
-                        animate(mTrackWidth);
+                        animate(mThumbRadius * 2);
                     }
                 }
 
@@ -262,9 +237,9 @@ public class OrcaSwitch extends View {
     @Override
     public boolean performClick() {
         if (mChecked) {
-            animate(-mTrackWidth);
+            animate(-mThumbRadius * 2);
         } else {
-            animate(mTrackWidth);
+            animate(mThumbRadius * 2);
         }
 
         return false;
@@ -314,27 +289,6 @@ public class OrcaSwitch extends View {
         }
     }
 
-    private void drawRipple(Canvas canvas) {
-        if (mTouching) {
-            if (mDisabled) {
-                canvas.drawCircle(mThumbX, mRippleCircleY, mRippleRadius, mRippleDisabledPaint);
-                return;
-            }
-
-            if (mThumbX < mCenterX) {
-                canvas.drawCircle(mThumbX, mRippleCircleY, mRippleRadius, mRippleOffPaint);
-            } else {
-                canvas.drawCircle(mThumbX, mRippleCircleY, mRippleRadius, mRippleOnPaint);
-            }
-        } else {
-            if (mDisabled) {
-                canvas.drawCircle(mThumbX, mRippleCircleY, mRippleRadius, mRipplePaint);
-                return;
-            }
-            canvas.drawCircle(mThumbX, mRippleCircleY, mRippleRadius, mRipplePaint);
-        }
-    }
-
     private void drawThumb(Canvas canvas) {
         if (mDisabled) {
             canvas.drawCircle(mThumbX, mThumbCircleY, mThumbRadius, mThumbDisabledPaint);
@@ -381,10 +335,10 @@ public class OrcaSwitch extends View {
     private void move(float distance) {
         mThumbX = mThumbX + distance;
 
-        if (mThumbX < mTrackLeft) {
-            mThumbX = mTrackLeft;
-        } else if (mThumbX > mTrackRight) {
-            mThumbX = mTrackRight;
+        if (mThumbX < mThumbLeft) {
+            mThumbX = mThumbLeft;
+        } else if (mThumbX > mThumbRight) {
+            mThumbX = mThumbRight;
         }
 
         invalidate();
@@ -412,8 +366,9 @@ public class OrcaSwitch extends View {
                         if (mToggleCheckedChangeEvent) {
                             performChange();
                         }
-                        mToggleCheckedChangeEvent = true;
                     }
+
+                    mToggleCheckedChangeEvent = true;
                 }
             }
         });

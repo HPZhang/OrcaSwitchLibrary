@@ -16,7 +16,10 @@
             android:layout_gravity="center"
             app:disabled="false"
             app:checked="true"
-            app:size="medium"/>
+            app:size="medium"
+            app:thumbOnColor="@android:color/white"
+            app:thumbOffColor="@android:color/white"
+            />
 
     </FrameLayout>
 
